@@ -9,7 +9,6 @@ import RollupColumn from '../../../../models/RollupColumn';
 import formulaQueryBuilderv2 from './formulav2/formulaQueryBuilderv2';
 import FormulaColumn from '../../../../models/FormulaColumn';
 import { RelationTypes, UITypes } from 'nocodb-sdk';
-// import LookupColumn from '../../../models/LookupColumn';
 import { sanitize } from './helpers/sanitize';
 
 export default async function conditionV2(
@@ -328,6 +327,10 @@ const parseConditionV2 = async (
               qb = qb.where(customWhereClause || field, '');
             else if (filter.value === 'notempty')
               qb = qb.whereNot(customWhereClause || field, '');
+            else if (filter.value === 'true')
+              qb = qb.where(customWhereClause || field, true);
+            else if (filter.value === 'false')
+              qb = qb.where(customWhereClause || field, false);
             break;
           case 'isnot':
             if (filter.value === 'null')
@@ -338,6 +341,10 @@ const parseConditionV2 = async (
               qb = qb.whereNot(customWhereClause || field, '');
             else if (filter.value === 'notempty')
               qb = qb.where(customWhereClause || field, '');
+            else if (filter.value === 'true')
+              qb = qb.whereNot(customWhereClause || field, true);
+            else if (filter.value === 'false')
+              qb = qb.whereNot(customWhereClause || field, false);
             break;
           case 'lt':
             qb = qb.where(field, customWhereClause ? '>' : '<', val);
@@ -364,6 +371,16 @@ const parseConditionV2 = async (
             break;
           case 'notnull':
             qb = qb.whereNotNull(customWhereClause || field);
+            break;
+          case 'checked':
+            qb = qb.where(customWhereClause || field, true);
+            break;
+          case 'notchecked':
+            qb = qb.where((grpdQb) => {
+              grpdQb
+                .whereNull(customWhereClause || field)
+                .orWhere(customWhereClause || field, false);
+            });
             break;
           case 'btw':
             qb = qb.whereBetween(field, val.split(','));

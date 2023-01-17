@@ -73,9 +73,10 @@ const types = computed(() => {
     switch (col.uidt) {
       case UITypes.Number:
       case UITypes.Decimal:
-        obj[col.title] = obj[col.column_name] = 'number'
+        obj[col.id] = obj[col.title] = obj[col.column_name] = 'number'
         break
       case UITypes.Checkbox:
+        obj[col.id] = obj[col.title] = obj[col.column_name] = 'boolean'
         obj[col.title] = obj[col.column_name] = 'boolean'
         break
     }
@@ -213,13 +214,15 @@ defineExpose({
               dropdown-class-name="nc-dropdown-filter-comp-op"
               @change="filterUpdateCondition(filter, i)"
             >
-              <a-select-option v-for="compOp in comparisonOpList" :key="compOp.value" :value="compOp.value" class="">
+              <template v-for="compOp in comparisonOpList" :key="compOp.value">
+              <a-select-option  :value="compOp.value" v-if=" !compOp.allowedTypes || (filter.fk_column_id && compOp.allowedTypes.includes(types[filter.fk_column_id]))" >
                 {{ compOp.text }}
               </a-select-option>
+              </template>
             </a-select>
 
             <span
-              v-if="filter.comparison_op && ['null', 'notnull', 'empty', 'notempty'].includes(filter.comparison_op)"
+              v-if="filter.comparison_op && ['null', 'notnull','checked', 'notchecked', 'empty', 'notempty'].includes(filter.comparison_op)"
               :key="`span${i}`"
             />
 

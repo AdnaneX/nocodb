@@ -4,8 +4,21 @@ export const comparisonOpList: {
   text: string
   value: string
   ignoreVal?: boolean
-  allowedTypes?: string[]
+  includedTypes?: UITypes[]
+  excludedTypes?: UITypes[]
 }[] = [
+  {
+    text: 'is checked',
+    value: 'checked',
+    ignoreVal: true,
+    includedTypes: [UITypes.Checkbox],
+  },
+  {
+    text: 'is not checked',
+    value: 'notchecked',
+    ignoreVal: true,
+    includedTypes: [UITypes.Checkbox],
+  },
   {
     text: 'is equal',
     value: 'eq',
@@ -17,20 +30,24 @@ export const comparisonOpList: {
   {
     text: 'is like',
     value: 'like',
+    excludedTypes: [UITypes.Checkbox],
   },
   {
     text: 'is not like',
     value: 'nlike',
+    excludedTypes: [UITypes.Checkbox],
   },
   {
     text: 'is empty',
     value: 'empty',
     ignoreVal: true,
+    excludedTypes: [UITypes.Checkbox],
   },
   {
     text: 'is not empty',
     value: 'notempty',
     ignoreVal: true,
+    excludedTypes: [UITypes.Checkbox],
   },
   {
     text: 'is null',
@@ -43,31 +60,23 @@ export const comparisonOpList: {
     ignoreVal: true,
   },
   {
-    text: 'is checked',
-    value: 'checked',
-    ignoreVal: true,
-    allowedTypes: ['boolean'],
-  },
-  {
-    text: 'is not checked',
-    value: 'notchecked',
-    ignoreVal: true,
-    allowedTypes: ['boolean'],
-  },
-  {
     text: '>',
     value: 'gt',
+    excludedTypes: [UITypes.Checkbox],
   },
   {
     text: '<',
     value: 'lt',
+    excludedTypes: [UITypes.Checkbox],
   },
   {
     text: '>=',
     value: 'gte',
+    excludedTypes: [UITypes.Checkbox],
   },
   {
     text: '<=',
     value: 'lte',
+    excludedTypes: [UITypes.Checkbox],
   },
 ]
